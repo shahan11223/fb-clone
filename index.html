@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pro Touch Vault</title>
+    <title>Ultimate Touch Vault</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; cursor: none; }
@@ -11,31 +11,33 @@
         body { 
             margin: 0; padding: 0; min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            background: #02040a; overflow: hidden;
-            touch-action: none; /* Mobile scroll block taake dot move ho */
+            background: #010208; overflow: hidden;
+            /* Ye line mobile scroll ko rokti hai taake dot chale */
+            touch-action: none; 
         }
 
-        /* 1. TOUCH & MOUSE TRACKER */
+        /* 1. TOUCH DOT & GLOW */
         #cursor-glow {
-            position: fixed; width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, transparent 70%);
+            position: fixed; width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.2) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none; 
             transform: translate(-50%, -50%);
-            z-index: 1; left: -500px; top: -500px; /* Start outside */
+            z-index: 1; left: -500px; top: -500px;
+            transition: transform 0.1s ease-out;
         }
 
         .custom-cursor {
-            position: fixed; width: 15px; height: 15px; background: #00f2ff;
+            position: fixed; width: 20px; height: 20px; background: #00f2ff;
             border-radius: 50%; pointer-events: none; z-index: 9999;
-            box-shadow: 0 0 15px #00f2ff, 0 0 30px #00f2ff;
+            box-shadow: 0 0 20px #00f2ff, 0 0 40px #00f2ff;
             transform: translate(-50%, -50%);
             left: -500px; top: -500px;
         }
 
-        /* 🐒 MONKEY STYLING */
+        /* 🐒 MONKEY ANIMATION */
         .monkey-box {
             position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-            font-size: 80px; z-index: 10; transition: 0.4s;
+            font-size: 80px; z-index: 10; transition: 0.3s ease;
         }
         .monkey-face { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
         .monkey-closed { position: absolute; top: 0; left: 0; color: #ff00ff; opacity: 0; text-shadow: 0 0 20px #ff00ff; }
@@ -45,31 +47,31 @@
 
         /* 2. THE MAIN CARD */
         .cyber-card { 
-            position: relative; background: rgba(10, 15, 30, 0.95); 
-            backdrop-filter: blur(25px); padding: 40px; border-radius: 20px;
-            width: 90%; max-width: 400px; text-align: center;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            box-shadow: 0 25px 50px rgba(0,0,0,1);
-            z-index: 2; margin-top: 50px; display: none;
+            position: relative; background: rgba(5, 10, 25, 0.95); 
+            backdrop-filter: blur(20px); padding: 40px; border-radius: 20px;
+            width: 90%; max-width: 380px; text-align: center;
+            border: 1px solid rgba(0, 242, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 1);
+            z-index: 2; margin-top: 60px; display: none;
         }
-        .active { display: block; animation: slideUp 0.6s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .active { display: block; animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
         input { 
-            width: 100%; padding: 15px; background: rgba(255,255,255,0.05); 
-            border: 1.5px solid rgba(0, 242, 255, 0.4); border-radius: 12px;
+            width: 100%; padding: 15px; background: rgba(0, 242, 255, 0.05); 
+            border: 2px solid rgba(0, 242, 255, 0.3); border-radius: 12px;
             color: #fff; outline: none; margin-bottom: 20px; font-size: 16px;
         }
-        input:focus { border-color: #00f2ff; box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
+        input:focus { border-color: #ff00ff; box-shadow: 0 0 15px rgba(255, 0, 255, 0.4); }
 
         .btn-pro { 
             width: 100%; padding: 16px; border: none; border-radius: 12px;
             background: linear-gradient(45deg, #00f2ff, #0072ff);
             color: #fff; font-weight: bold; text-transform: uppercase;
-            cursor: pointer; box-shadow: 0 5px 20px rgba(0, 114, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 114, 255, 0.5);
         }
 
-        .links { color: #ff00ff; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px rgba(255,0,255,0.3); }
+        .links { color: #ff00ff; font-weight: bold; cursor: pointer; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -82,25 +84,25 @@
             <i class="fa-solid fa-face-smile monkey-face"></i>
             <i class="fa-solid fa-face-grimace monkey-closed"></i>
         </div>
-        <h2 style="color: #00f2ff; letter-spacing: 2px;">SECURE LOGIN</h2>
+        <h2 style="color: #00f2ff; text-shadow: 0 0 10px #00f2ff;">CYBER VAULT</h2>
         <form onsubmit="handleSubmit(event, 'Login')">
             <input type="text" name="User" placeholder="Access ID" required>
-            <input type="password" id="pass" name="Pass" placeholder="Security Key" required 
+            <input type="password" id="pass" name="Pass" placeholder="Secret Key" required 
                    onfocus="cover()" onblur="uncover()">
-            <button type="submit" class="btn-pro">Decrypt & Enter</button>
+            <button type="submit" class="btn-pro">Authorize</button>
         </form>
         <p style="margin-top: 20px; font-size: 13px; color: #555;">
-            FORGOT? <span class="links" onclick="show('v-forgot')">RECOVER</span> | 
-            NEW? <span class="links" style="color:#00f2ff" onclick="show('v-signup')">REGISTER</span>
+            <span class="links" onclick="show('v-forgot')">FORGOT?</span> | 
+            <span class="links" style="color:#00f2ff" onclick="show('v-signup')">SIGNUP</span>
         </p>
     </div>
 
     <div id="v-signup" class="cyber-card">
-        <h2 style="color: #ff00ff;">CREATE ID</h2>
+        <h2 style="color: #ff00ff;">NEW ID</h2>
         <form onsubmit="handleSubmit(event, 'Signup')">
             <input type="text" name="Name" placeholder="Full Name" required>
-            <input type="password" name="NPass" placeholder="Master Key" required>
-            <button type="submit" class="btn-pro" style="background: #7000ff;">Initialize</button>
+            <input type="password" name="NPass" placeholder="Password" required>
+            <button type="submit" class="btn-pro" style="background: #7000ff;">Create</button>
         </form>
         <p class="links" onclick="show('v-login')" style="margin-top: 15px;">BACK</p>
     </div>
@@ -109,7 +111,7 @@
         <h2 style="color: #00f2ff;">RECOVERY</h2>
         <form onsubmit="handleSubmit(event, 'Forgot')">
             <input type="text" name="Email" placeholder="Email" required>
-            <button type="submit" class="btn-pro">Search Vault</button>
+            <button type="submit" class="btn-pro">Reset</button>
         </form>
         <p class="links" onclick="show('v-login')" style="margin-top: 15px;">CANCEL</p>
     </div>
@@ -118,33 +120,30 @@
         const glow = document.getElementById('cursor-glow');
         const dot = document.querySelector('.custom-cursor');
 
-        // 🔥 THE PERFECT TOUCH FIX
-        function updatePosition(x, y) {
+        // 🔥 TOUCH MOVE FIX FOR MOBILE
+        function handleMove(e) {
+            // Stop scroll only when moving dot
+            if (e.type === 'touchmove') {
+                e.preventDefault(); 
+            }
+            
+            let x = (e.type === 'touchmove' || e.type === 'touchstart') ? e.touches[0].clientX : e.clientX;
+            let y = (e.type === 'touchmove' || e.type === 'touchstart') ? e.touches[0].clientY : e.clientY;
+            
             glow.style.left = x + 'px';
             glow.style.top = y + 'px';
             dot.style.left = x + 'px';
             dot.style.top = y + 'px';
         }
 
-        // Mouse Move
-        window.addEventListener('mousemove', (e) => {
-            updatePosition(e.clientX, e.clientY);
-        });
+        // Mouse Listeners
+        window.addEventListener('mousemove', handleMove);
+        
+        // Mobile Touch Listeners (Passive: false is key)
+        window.addEventListener('touchmove', handleMove, { passive: false });
+        window.addEventListener('touchstart', handleMove, { passive: false });
 
-        // Touch Move (Mobile Specific)
-        window.addEventListener('touchmove', (e) => {
-            // e.preventDefault(); // Default scrolling block karta hai
-            let touch = e.touches[0];
-            updatePosition(touch.clientX, touch.clientY);
-        }, { passive: false });
-
-        // Touch Start (Mobile Specific)
-        window.addEventListener('touchstart', (e) => {
-            let touch = e.touches[0];
-            updatePosition(touch.clientX, touch.clientY);
-        }, { passive: false });
-
-        // 🐒 Monkey Animation
+        // 🐒 Monkey Logic
         function cover() { document.getElementById('monkey').classList.add('look-away'); }
         function uncover() { document.getElementById('monkey').classList.remove('look-away'); }
 
